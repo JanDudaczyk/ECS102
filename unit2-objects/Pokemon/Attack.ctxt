@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Attack
+comment1.params=name
+comment1.target=Attack(java.lang.String)
+comment2.params=name\ power
+comment2.target=Attack(java.lang.String,\ int)
+comment3.params=
+comment3.target=java.lang.String\ getName()
+comment4.params=
+comment4.target=int\ getPower()
+numComments=5
