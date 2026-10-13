@@ -20,7 +20,11 @@ public class StringSpeed {
         //    StringBuilder sb = new StringBuilder();  then  sb.append("t");
         //    At the end: String t = sb.toString();
         start = System.nanoTime();
-        String t = "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append("t");
+        }
+        String t = sb.toString();
         long builderTime = System.nanoTime() - start;
 
         System.out.println("Same text? " + s.equals(t));

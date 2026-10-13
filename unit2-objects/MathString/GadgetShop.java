@@ -47,32 +47,32 @@ public class GadgetShop {
         String code = "tab-2026-blue";
 
         // B1. TODO: the number of characters in code
-        int len = 0;
+        int len = code.length();
         System.out.println("B1 Length: " + len);
 
         // B2. TODO: the index of the first "-" in code
-        int dash = 0;
+        int dash = code.indexOf("-");
         System.out.println("B2 First dash at index: " + dash);
 
         // B3. TODO: the product type (everything before the first dash)
-        String type = "";
+        String type = code.substring(0, dash);
         System.out.println("B3 Type: " + type);
 
         // B4. TODO: the color (starts at index 9)
-        String color = "";
+        String color = code.substring(9);
         System.out.println("B4 Color: " + color);
 
-        // B5. Run this line as written. Predict the output BEFORE you run it.
+        // B5. Run this line as written. Predict the output BEFORE you run it. I think the output will be the code in uppercase
         code.toUpperCase();
         System.out.println("B5 After code.toUpperCase(): " + code);
 
         // B6. TODO: change the line below so code really becomes uppercase.
-        code.toUpperCase();
+        code = code.toUpperCase();
         System.out.println("B6 After code = code.toUpperCase(): " + code);
 
         // B7. TODO: compare code with scanned using the correct String method.
         String scanned = "TAB-2026-BLUE";
-        boolean match = false;
+        boolean match = code.equals(scanned);
         System.out.println("B7 Codes match: " + match);
     }
 }
