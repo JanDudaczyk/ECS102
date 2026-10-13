@@ -1,5 +1,11 @@
-import greenfoot.*;
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+/**
+ * Write a description of class User here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
 public class User extends Actor
 {
     private String name;
@@ -8,56 +14,47 @@ public class User extends Actor
     public User(String name)
     {
         this.name = name;
-        this.pokemon = null;
+        setImage(new GreenfootImage(" " + name + " ", 28, Color.WHITE, new Color(0, 0, 0, 160)));
     }
 
     public void setPokemon(Pokemon p)
     {
-        this.pokemon = p;
+        pokemon = p;
     }
 
     public Pokemon getPokemon()
     {
-        return this.pokemon;
+        return pokemon;
     }
 
     public void switchPokemon(Pokemon newPokemon)
     {
-        this.pokemon = newPokemon;
-        System.out.println(this.name + " switched to " + newPokemon.getName() + "!");
+        if (pokemon != null && pokemon.getWorld() != null)
+        {
+            World world = pokemon.getWorld();
+            world.addObject(newPokemon, pokemon.getX(), pokemon.getY());
+            world.removeObject(pokemon);
+        }
+        pokemon = newPokemon;
     }
 
     public void heal()
     {
-        if (this.pokemon != null) {
-            this.pokemon.heal();
-            System.out.println(this.name + "'s " + this.pokemon.getName() + " was healed!");
-        }
+        pokemon.heal();
     }
 
     public void attack(String name, User enemy)
     {
-        if (this.pokemon != null && enemy != null && enemy.getPokemon() != null) {
-            this.pokemon.attack(name, enemy);
-            System.out.println(this.name + "'s " + this.pokemon.getName() +
-                             " used " + name + " against " + enemy.getPokemon().getName() + "!");
-        }
+        pokemon.attack(name, enemy);
     }
 
     public boolean isEndGame()
     {
-        if (this.pokemon != null) {
-            return this.pokemon.isOut();
-        }
-        return false;
+        return pokemon.isOut();
     }
 
     public String getName()
     {
-        return this.name;
-    }
-
-    public void act()
-    {
+        return name;
     }
 }

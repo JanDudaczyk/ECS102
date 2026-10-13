@@ -1,9 +1,14 @@
-import greenfoot.*;
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+/**
+ * Write a description of class Pokemon here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
 public class Pokemon extends Actor
 {
     private int hp;
-    private int maxHp;
     private int ap;
     private String name;
     private GreenfootImage img;
@@ -11,102 +16,116 @@ public class Pokemon extends Actor
     private Attack attack;
     private String type;
 
-    public Pokemon(int hp, int ap, String name, String attackName, String type)
+    public Pokemon(int hp, int ap, String name, String attack, String type)
     {
         this.hp = hp;
-        this.maxHp = hp;
         this.ap = ap;
         this.name = name;
-        this.attack = new Attack(attackName);
+        this.attack = new Attack(attack);
         this.type = type;
         this.outStatus = false;
 
-        try {
-            this.img = new GreenfootImage(name + ".png");
-            setImage(this.img);
-        } catch (Exception e) {
-            System.out.println("Image not found: " + name + ".png");
+        img = new GreenfootImage(name.toLowerCase() + ".png");
+        img.scale(200, 200);
+        setImage(img);
+    }
+
+    public void act()
+    {
+        fight();
+    }
+
+    public void fight()
+    {
+        if (Greenfoot.isKeyDown("space") && !outStatus)
+        {
+            for (Object o : getWorld().getObjects(Pokemon.class))
+            {
+                Pokemon other = (Pokemon) o;
+                if (other != this && !other.isOut())
+                {
+                    other.takeDamage(ap + attack.getPower());
+                }
+            }
         }
     }
 
     public String getType()
     {
-        return this.type;
+        return type;
     }
 
     public void attack(String attackName, User enemy)
     {
-        if (this.ap > 0 && enemy != null && enemy.getPokemon() != null) {
-            int damage = getAttackPower(attackName, enemy);
-            enemy.getPokemon().takeDamage(damage);
-            this.ap -= 10;
-        }
+        int damage = getAttackPower(attackName, enemy);
+        enemy.getPokemon().takeDamage(damage);
     }
 
     public void takeDamage(int amount)
     {
-        this.hp -= amount;
-        if (this.hp <= 0) {
-            this.hp = 0;
-            this.outStatus = true;
+        hp = hp - amount;
+        if (hp <= 0)
+        {
+            hp = 0;
+            outStatus = true;
+            img.setTransparency(70);
         }
     }
 
     public void heal()
     {
-        this.hp = this.maxHp;
-        this.ap = 100;
-        this.outStatus = false;
+        if (!outStatus)
+        {
+            hp = hp + 20;
+        }
     }
 
     public void printAttack()
     {
-        System.out.println("Attack: " + this.attack.getName() + " (Power: " + this.attack.getPower() + ")");
+        System.out.println(name + " knows " + attack.getName() + " (power " + attack.getPower() + ")");
     }
 
     public int getAttackPower(String attackName, User enemy)
     {
-        int basePower = this.attack.getPower();
-        String enemyType = enemy.getPokemon().getType();
-
-        if (this.type.equals("Fire") && enemyType.equals("Grass")) {
-            basePower = (int)(basePower * 1.5);
-        } else if (this.type.equals("Water") && enemyType.equals("Fire")) {
-            basePower = (int)(basePower * 1.5);
-        } else if (this.type.equals("Grass") && enemyType.equals("Water")) {
-            basePower = (int)(basePower * 1.5);
+        if (!attackName.equals(attack.getName()))
+        {
+            return 0;
         }
 
-        return basePower;
+        int damage = ap + attack.getPower();
+        String enemyType = enemy.getPokemon().getType();
+        if ((type.equals("Fire") && enemyType.equals("Grass"))
+            || (type.equals("Water") && enemyType.equals("Fire"))
+            || (type.equals("Grass") && enemyType.equals("Water"))
+            || (type.equals("Electric") && enemyType.equals("Water")))
+        {
+            damage = damage * 2;
+        }
+        return damage;
     }
 
     public int getHp()
     {
-        return this.hp;
+        return hp;
     }
 
     public int getAp()
     {
-        return this.ap;
+        return ap;
     }
 
     public String getName()
     {
-        return this.name;
+        return name;
     }
 
     public boolean isOut()
     {
-        return this.outStatus;
+        return outStatus;
     }
 
     public Attack getAttack()
     {
-        return this.attack;
-    }
-
-    @Override
-    public void act()
-    {
+        return attack;
     }
 }
